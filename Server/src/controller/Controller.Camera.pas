@@ -3,6 +3,7 @@ unit Controller.Camera;
 interface
 
 uses
+  System.SysUtils,
   MVCFramework,
   MVCFramework.Commons,
   MVCFramework.Serializer.Commons,
@@ -59,9 +60,14 @@ var
   vCameras : TObjectList<TCamera>;
 begin
   vConn:= TConnectionModel.Create;
-  vCameras:= TMVCActiveRecord.SelectRQL<TCamera>('', 10);
   try
-    Render<TCamera>(vCameras);
+    try
+      vCameras:= TMVCActiveRecord.SelectRQL<TCamera>('', 10);
+      Render(200, 'OK', '', vCameras);
+    except
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
+    end;
 
   finally
     vConn.Free;
@@ -80,8 +86,8 @@ begin
       vCamera := TMVCActiveRecord.GetByPK<TCamera>(AnId);
       Render(200, 'OK', '', vCamera);
     except
-      on E: EConversionError do
-
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Câmera inexistente neste servidor');
       on E: Exception do
         Render(500, 'Erro interno do servidor');
     end;
@@ -109,9 +115,9 @@ begin
       vCamera.Insert;
       Render(201, 'Câmera criada', '', vCamera);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
-
 
   finally
     vConn.Free;
@@ -130,11 +136,14 @@ begin
   try
     try
       vCamera.Update;
+      Render(200, 'Dados da câmera atualizados com sucesso.', '', vCamera);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Câmera inexistente neste servidor');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
 
-    Render(200, 'Dados da câmera atualizados com sucesso.', '', vCamera);
   finally
     vConn.Free;
   end;
@@ -151,11 +160,14 @@ begin
   try
     try
       vCamera.Delete;
+      Render(204, 'Câmera deletada com sucesso.', '', vCamera);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Câmera inexistente neste servidor');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
 
-    Render(204, 'Câmera deletada com sucesso.', '', vCamera);
   finally
     vConn.Free;
   end;

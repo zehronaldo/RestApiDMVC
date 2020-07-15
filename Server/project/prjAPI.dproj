@@ -196,8 +196,6 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="..\src\controller\Controller.Camera.pas"/>
-        <DCCReference Include="..\src\controller\Controller.Server.pas"/>
         <DCCReference Include="..\src\model\Model.Server.pas"/>
         <DCCReference Include="..\src\services\WebModule.Main.pas">
             <Form>wmMain</Form>
@@ -206,6 +204,8 @@
         </DCCReference>
         <DCCReference Include="..\src\model\Model.Camera.pas"/>
         <DCCReference Include="..\src\model\Model.Connection.pas"/>
+        <DCCReference Include="..\src\controller\Controller.Camera.pas"/>
+        <DCCReference Include="..\src\controller\Controller.Server.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -233,7 +233,6 @@
                 <Platform value="iOSDevice32">False</Platform>
                 <Platform value="iOSDevice64">True</Platform>
                 <Platform value="iOSSimulator">False</Platform>
-                <Platform value="Linux64">False</Platform>
                 <Platform value="OSX32">False</Platform>
                 <Platform value="OSX64">True</Platform>
                 <Platform value="Win32">True</Platform>

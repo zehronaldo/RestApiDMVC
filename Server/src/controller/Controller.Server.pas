@@ -72,10 +72,11 @@ begin
   try
     try
       vServers := TMVCActiveRecord.SelectRQL<TServer>('', 10);
+      Render(200, 'OK', '', vServers);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
-    Render(200, 'OK', '', vServers);
   finally
     vConn.Free;
   end;
@@ -92,11 +93,14 @@ begin
   try
     try
       vServer := TMVCActiveRecord.GetByPK<TServer>(AGuid);
+      Render(200, 'OK', '', vServer);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Servidor inexistente');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
-    
-    Render(200, 'OK', '', vServer);
+
   finally
     vConn.Free;
   end;
@@ -114,11 +118,15 @@ begin
   try
     try
       vServer.Insert;
+      Render(201, 'Servidor criado', '', vServer);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Servidor inexistente');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
 
-    Render(201, 'Servidor criado', '', vServer);
+
   finally
     vConn.Free;
   end;
@@ -136,11 +144,14 @@ begin
   try
     try
       vServer.Update;
+      Render(200, 'Registro atualizado com sucesso.', '', vServer);
     except
-      Render(500, 'Erro interno do servidor');
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Servidor inexistente');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
 
-    Render(200, 'Registro atualizado com sucesso.', '', vServer);
   finally
     vConn.Free;
   end;
@@ -157,11 +168,14 @@ begin
   try
     try
       vServer.Delete;
+      Render(204, 'Registro deletado com sucesso.');
     except
-      Render(500, 'Erro interno do servidor');
+      on E: EMVCActiveRecordNotFound do
+        Render(404, 'Servidor inexistente');
+      on E: Exception do
+        Render(500, 'Erro interno do servidor');
     end;
 
-    Render(204, 'Registro deletado com sucesso.');
   finally
     vConn.Free;
   end;

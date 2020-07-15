@@ -12,12 +12,12 @@ uses
   Web.WebBroker,
   IdContext,
   IdHTTPWebBrokerBridge,
-  Controller.Camera in '..\src\controller\Controller.Camera.pas',
-  Controller.Server in '..\src\controller\Controller.Server.pas',
   Model.Server in '..\src\model\Model.Server.pas',
   WebModule.Main in '..\src\services\WebModule.Main.pas' {wmMain: TWebModule},
   Model.Camera in '..\src\model\Model.Camera.pas',
-  Model.Connection in '..\src\model\Model.Connection.pas';
+  Model.Connection in '..\src\model\Model.Connection.pas',
+  Controller.Camera in '..\src\controller\Controller.Camera.pas',
+  Controller.Server in '..\src\controller\Controller.Server.pas';
 
 {$R *.res}
 
